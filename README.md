@@ -78,6 +78,7 @@ C++ Google test codes to confirm that implemented functions work correctly with 
 ## 🐍 [Python scripts](./scripts/)
 ### Create virtual environment
 ```
+# Run all python scripts in `Docker` environment
 cd /app/LEDGE
 uv sync
 ```
