@@ -1,1 +1,3 @@
-
+[submodule "submodule/bimvee"]
+	path = submodule/bimvee
+	url = https://github.com/event-driven-robotics/bimvee.git
