@@ -33,7 +33,7 @@ https://github.com/user-attachments/assets/f1c6d5f4-05b0-41b7-9107-a626853c74cb
 ## 📋 Qualitative evaluation of line segments
 ![alt text](./assets/qualitative_evals.png)
 
-## Setup environment
+## 📐 Setup environment
 ### Build docker image
 ```
 docker build --build-arg UID=$(id -u) --build-arg GID=$(id -g) -t ledge:latest .
@@ -59,7 +59,7 @@ sudo chmod +x setup_usb_permissions.sh
 ./setup_usb_permissions.sh
 ```
 
-## Library contents
+## 📚 Library contents
 ### [ledge](./ledge/)
 C++ LEDGE library including the following functions
 - `core`: core functions for LEDGE, such as initialization, visualization, etc.
@@ -75,7 +75,7 @@ C++ Google test codes to confirm that implemented functions work correctly with 
 - All tests are executed automatically in Github Actions.
 - All tests should be passed to merge pull request.
 
-## [Python scripts](./scripts/)
+## 🐍 [Python scripts](./scripts/)
 ### Create virtual environment
 ```
 cd /app/LEDGE
@@ -92,7 +92,7 @@ uv run scripts/***.py
 ```
 - `uv run scripts/***.py -h`: Show help to introduce how to run each script.
 
-## clang-format
+## 🔨 clang-format
 You can format all `*.h` and `*.cpp` files in this repository by using the following commands
 
 Terminal
