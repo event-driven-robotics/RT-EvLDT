@@ -1,0 +1,67 @@
+name: LEDGE test
+on: 
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - release/*
+      - feat/*
+      - dev/*
+      - main
+
+jobs:
+  clang-format:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: DoozyX/clang-format-lint-action@v0.18.1
+        with:
+          source: "."
+          extensions: "h,cpp"
+          clangFormatVersion: 10
+          style: file
+
+  ledge-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (GitHub)
+        uses: actions/checkout@v3
+
+      - name: Install Latest Docker Compose
+        run: |
+            COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep 'tag_name' | cut -d\" -f4)
+            DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
+            mkdir -p $DOCKER_CONFIG/cli-plugins
+            sudo curl -SL "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o $DOCKER_CONFIG/cli-plugins/docker-compose
+            sudo chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
+
+      - name: Check Docker Compose Version
+        run: docker compose version
+
+      - name: Build LEDGE docker image
+        run: docker build --build-arg UID=$(id -u) --build-arg GID=$(id -g) -t ledge:latest .
+
+      - name: Run LEDGE docker
+        run: docker compose up -d
+
+      - name: Build and install LEDGE library
+        run: docker exec ledge /bin/bash -c "cd /app/LEDGE/ledge && mkdir -p build && cd build && cmake .. && make && sudo make install"
+
+      - name: Run LEDGE unit test
+        run: |
+            docker exec ledge /bin/bash -c "cd /app/LEDGE/unit_test && mkdir -p build && cd build && cmake .. && make"
+            docker exec ledge /bin/bash -c "/app/LEDGE/unit_test/build/test_ledge_core"
+            docker exec ledge /bin/bash -c "/app/LEDGE/unit_test/build/test_ledge_tracking"
+            docker exec ledge /bin/bash -c "/app/LEDGE/unit_test/build/test_ledge_manager"
+
+      - name: Python script format check
+        run: docker exec ledge /bin/bash -c "cd /app/LEDGE && uvx ruff format scripts/*.py --preview --diff"
+
+      - name: Python script lint check
+        run: docker exec ledge /bin/bash -c "cd /app/LEDGE && uvx ruff check scripts/*.py"
+
+      - name: Python script type check
+        run: docker exec ledge /bin/bash -c "cd /app/LEDGE && uv run pyright scripts/*.py"

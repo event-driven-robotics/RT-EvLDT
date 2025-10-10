@@ -1,0 +1,6 @@
+.vscode/*
+ledge/build/*
+unit_test/build/*
+example/build/*
+scripts/*.sh
+.venv

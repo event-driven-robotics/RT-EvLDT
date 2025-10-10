@@ -1,0 +1,33 @@
+[project]
+name = "ledge"
+version = "0.1.0"
+description = "Python scripts for LEDGE"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy<2",
+    "rosbags>=0.10.6",
+    "tqdm>=4.67.0",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=6.29.5",
+    "jupyter>=1.1.1",
+    "ipython>=8.28.0",
+    "notebook>=7.2.2",
+    "ruff>=0.7.0",
+    "pyright>=1.1.406",
+]
+
+[tool.pyright]
+typeCheckingMode = "standard"
+include = ["scripts/**"]
+extraPaths = ["/app/LEDGE/submodule/bimvee"]
+PythonVersion = "3.10.18"
+reportUnknownArgumentType = false
+reportUnknownLambdaType = false
+reportUnknownVariableType = false
+reportUnknownMemberType = false
+reportUnknownModuleType = false
+reportMissingTypeStubs = false
