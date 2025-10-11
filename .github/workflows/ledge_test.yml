@@ -64,4 +64,4 @@ jobs:
         run: docker exec ledge /bin/bash -c "cd /app/LEDGE && uvx ruff check scripts/*.py"
 
       - name: Python script type check
-        run: docker exec ledge /bin/bash -c "cd /app/LEDGE && uv run pyright scripts/*.py"
+        run: docker exec ledge /bin/bash -c "cd /app/LEDGE && git submodule update --init --recursive && uv run pyright scripts/*.py"
