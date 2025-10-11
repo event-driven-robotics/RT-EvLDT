@@ -123,7 +123,7 @@ RUN echo "${UNAME} ALL=(ALL) NOPASSWD:ALL" | tee /etc/sudoers.d/${UNAME}
 COPY ./ /app/LEDGE
 
 # Change owner of some folders for the development
-RUN chown -R $UNAME:$UNAME $CODE_DIR
+RUN chown -R $UNAME:$UNAME $CODE_DIR /app
 
 USER $UNAME
 WORKDIR /home/${UNAME}
