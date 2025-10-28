@@ -25,6 +25,15 @@
 This repository is the official implementation of the paper "Lattice-allocated Real-time Line Segment Feature Detection and Tracking Using Only an Event-based Camera", which was presented on
 2nd Workshop on Neuromorphic Vision: Advantages and Applications of Event Cameras (NeVi2025), International Conference on Computer Vision (ICCV) as a **Spotlight session**.
 
+```bibtex
+@inproceedings{ikura2025iccv-nevi,
+  title={Lattice-allocated Real-time Line Segment Feature Detection and Tracking Using Only an Event-based Camera},
+  author={Ikura, Mikihiro and Glover, Arren and Mizuno, Masayoshi and Bartolozzi, Chiara},
+  booktitle={Proceedings of the 2nd Workshop on Neuromorphic Vision: Advantages and Applications of Event Cameras (NeVi) in conjunctions with the International Conference on Computer Vision (ICCV)},
+  year={2025}
+}
+```
+
 ## 🎥 Video
 
 https://github.com/user-attachments/assets/f1c6d5f4-05b0-41b7-9107-a626853c74cb
