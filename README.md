@@ -45,7 +45,7 @@ https://github.com/user-attachments/assets/f1c6d5f4-05b0-41b7-9107-a626853c74cb
 ## 📐 Setup environment
 ### Build docker image
 ```
-docker build --build-arg UID=$(id -u) --build-arg GID=$(id -g) -t ledge:latest .
+docker build --build-arg UID=$(id -u) --build-arg GID=$(id -g) -t ledge:rt-evldt .
 ```
 - Input current User ID and Group ID into Docker environment
 
