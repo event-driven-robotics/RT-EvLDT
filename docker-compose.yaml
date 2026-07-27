@@ -1,6 +1,6 @@
 services:
   ledge:
-    image: ledge:latest
+    image: ledge:rt-evldt
     container_name: ledge
     privileged: true
     volumes:

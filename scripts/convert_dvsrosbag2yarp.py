@@ -1,9 +1,9 @@
 import argparse
 import pathlib
-from rosbags.highlevel import AnyReader
-import numpy as np
-from typing import List
 import sys
+
+import numpy as np
+from rosbags.highlevel import AnyReader
 from tqdm import tqdm
 
 ### Import bimvee from local environment
@@ -15,10 +15,10 @@ def convert_dvsrosbag2yarp(args: argparse.Namespace) -> None:
     # Params
     rosbag_path: pathlib.Path = pathlib.Path(args.rosbag_path)
     container: dict = {}
-    xs: List[int] = []
-    ys: List[int] = []
-    pols: List[bool] = []
-    tss: List[float] = []
+    xs: list[int] = []
+    ys: list[int] = []
+    pols: list[bool] = []
+    tss: list[float] = []
     total_messages: int = 0
     start_time_ns: int = 0
     end_time_ns: int = 0

@@ -7,7 +7,12 @@ ARG CODE_DIR=/usr/local/src
 RUN apt update
 
 #basic environment
-RUN apt install -y \
+RUN apt update && apt install -y \
+    apt-utils \
+    software-properties-common \
+    wget \
+    unzip \
+    curl \
     ca-certificates \
     build-essential \
     git \
@@ -15,11 +20,38 @@ RUN apt install -y \
     cmake-curses-gui \
     libace-dev \
     libassimp-dev \
+    libglm-dev \
+    libeigen3-dev
+
+# Suggested dependencies for OpenEB 3.0.2
+RUN apt update && apt install -y \
+    libopencv-dev \
+    libgtest-dev \
+    libboost-all-dev \
+    libusb-1.0-0-dev \
+    libeigen3-dev
+RUN apt update && apt install -y \
     libglew-dev \
     libglfw3-dev \
-    libglm-dev \
-    libeigen3-dev \
-    clang-format
+    libcanberra-gtk-module \
+    ffmpeg && \
+    rm -rf /var/lib/apt/lists/*
+
+# Python environment for OpenEB
+RUN apt update && apt -y install python3-pip python3-distutils
+RUN python3 -m pip install --no-cache-dir pip==24.0
+RUN python3 -m pip install --no-cache-dir "opencv-python>=4.5.5.64" "sk-video==1.1.10" "fire==0.4.0" "numpy<=1.21" pandas scipy numba h5py profilehooks pytest
+RUN python3 -m pip install --no-cache-dir jupyter jupyterlab matplotlib "ipywidgets==7.6.5"
+
+# Install pybind for OpenEB
+RUN cd $CODE_DIR && \
+    wget https://github.com/pybind/pybind11/archive/v2.6.0.zip && \
+    unzip v2.6.0.zip && \
+    cd pybind11-2.6.0 && \
+    mkdir build && cd build && \
+    cmake .. -DPYBIND11_TEST=OFF && \
+    cmake --build . && \
+    cmake --build . --target install
 
 # Suggested dependencies for YARP
 RUN apt update && apt install -y \
@@ -37,24 +69,20 @@ RUN apt update && apt install -y \
     gstreamer1.0-plugins-bad \
     gstreamer1.0-libav
 
-# Add metavision-sdk in sources.list
-RUN echo "deb [arch=amd64 trusted=yes] https://apt.prophesee.ai/dists/public/b4b3528d/ubuntu focal sdk" >> /etc/apt/sources.list &&\
-    apt update
+# Add OpenEB 3.0.2 and build
+ARG OPENEB_VERSION=3.0.2
+RUN cd $CODE_DIR && \
+    git clone --depth 1 --branch $OPENEB_VERSION https://github.com/prophesee-ai/openeb.git && \
+    cd openeb && \
+    mkdir build && cd build && \
+    cmake .. -DBUILD_TESTING=OFF && \
+    cmake --build . --config Release -- -j `nproc` && \
+    cmake --build . --target install
 
-RUN apt install -y \
-    libcanberra-gtk-module \
-    mesa-utils \
-    ffmpeg \
-    libboost-program-options-dev \
-    libopencv-dev \
-    metavision-sdk
-
-#my favourites
-RUN apt install -y \
+# My favourites
+RUN apt update && apt install -y \
     vim \
-    gdb \
-    libpython3-dev \
-    python3-dev
+    gdb
 
 # Build Open Image Debugger
 ARG OID_VERSION=v1.17.30
@@ -106,6 +134,16 @@ RUN cd $CODE_DIR &&\
     mkdir build && cd build &&\
     cmake .. &&\
     make -j `nproc` install
+
+# Register all libraries in the cache
+RUN ldconfig
+
+# Remove downloaded source trees (optional)
+RUN rm -rf \
+    ${CODE_DIR}/pybind11-2.6.0 \
+    ${CODE_DIR}/ycm \
+    ${CODE_DIR}/openeb \
+    ${CODE_DIR}/yarp
 
 # Add User ID and Group ID
 ARG UNAME=ledge
