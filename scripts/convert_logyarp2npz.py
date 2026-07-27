@@ -6,7 +6,7 @@ from tqdm import tqdm
 from typing import Any, Optional
 
 ### Import bimvee from local environment
-sys.path.append("/app/Line_Segment_Analysis/submodule/bimvee")
+sys.path.append("/app/LEDGE/submodule/bimvee")
 from bimvee.importIitYarp import importIitYarp
 
 
