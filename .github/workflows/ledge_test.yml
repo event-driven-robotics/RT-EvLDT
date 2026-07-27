@@ -42,7 +42,7 @@ jobs:
         run: docker compose version
 
       - name: Build LEDGE docker image
-        run: docker build --build-arg UID=$(id -u) --build-arg GID=$(id -g) -t ledge:latest .
+        run: docker build --build-arg UID=$(id -u) --build-arg GID=$(id -g) -t ledge:rt-evldt .
 
       - name: Run LEDGE docker
         run: docker compose up -d
