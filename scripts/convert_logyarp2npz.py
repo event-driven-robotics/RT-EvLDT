@@ -1,9 +1,10 @@
-import pathlib
-import numpy as np
-import sys
 import argparse
+import pathlib
+import sys
+from typing import Any
+
+import numpy as np
 from tqdm import tqdm
-from typing import Any, Optional
 
 ### Import bimvee from local environment
 sys.path.append("/app/LEDGE/submodule/bimvee")
@@ -15,7 +16,7 @@ def convert_logyarp2npz(args: argparse.Namespace) -> None:
     log_folder_path: pathlib.Path = pathlib.Path(args.log_folder_path)
     output_folder_path: pathlib.Path = pathlib.Path(args.output_folder_path)
     time_sec_range: float = args.time_sec_range
-    output_time_relation_file: Optional[pathlib.Path] = None
+    output_time_relation_file: pathlib.Path | None = None
     if args.time_relations:
         output_time_relation_file = output_folder_path / pathlib.Path(
             "time_relations.txt"
@@ -42,7 +43,7 @@ def convert_logyarp2npz(args: argparse.Namespace) -> None:
     else:
         start_npz_time_sec: float = float(args.start_time)
     total_npz_time_sec: float = stop_npz_time_sec - start_npz_time_sec
-    num_windows: int = int(np.floor((total_npz_time_sec / time_sec_range)))
+    num_windows: int = int(np.floor(total_npz_time_sec / time_sec_range))
 
     # Export event data to multiple .npz files for 30 ms
     for file_cnt in tqdm(range(num_windows), desc="Export .npz files"):
